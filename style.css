@@ -789,81 +789,6 @@ body {
     max-width: 100%;
 }
 
-.profile-avatar-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.profile-avatar-preview {
-    display: block;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background-color: #2f2f2f;
-    background-position: 50% 50%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-}
-
-.profile-avatar-preview::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
-    pointer-events: none;
-}
-
-.profile-avatar-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.profile-avatar-input {
-    display: none;
-}
-
-.profile-avatar-controls {
-    display: none;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    padding: 12px;
-}
-
-.profile-avatar-controls label {
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-    font-weight: 600;
-    gap: 6px;
-    color: #111111;
-}
-
-.profile-avatar-controls input[type="range"] {
-    width: 160px;
-}
-
-.profile-remove-btn {
-    background-color: #9c27b0;
-}
-
-.profile-remove-btn:hover {
-    background-color: #7b1fa2;
-}
-
-.profile-avatar-viewer {
-    width: 120px;
-    height: 120px;
-    margin-top: 4px;
-}
 
 .profile-rank {
     font-weight: 700;
@@ -1192,15 +1117,6 @@ body {
     #towerInput {
         max-width: 100%;
     }
-}
-
-.profile-avatar-actions .profile-action-btn {
-    background-color: #e0e0e0;
-    color: #111111;
-}
-
-.profile-avatar-actions .profile-action-btn:hover {
-    background-color: #cfcfcf;
 }
 
 .announcement-bar {

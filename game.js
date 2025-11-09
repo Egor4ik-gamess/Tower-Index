@@ -78,7 +78,6 @@ const profileDefaults = {
     favoriteTower: '',
     leastFavoriteTower: '',
     quote: '',
-<<<<<<< HEAD
     playtimeSeconds: 0
 };
 
@@ -1575,10 +1574,6 @@ function updateProfileStatsDisplay() {
     const ownerListDisplay = document.getElementById('profileOwnerListDisplay');
     const coOwnerListDisplay = document.getElementById('profileCoOwnerListDisplay');
     const testerListDisplay = document.getElementById('profileTesterListDisplay');
-<<<<<<< HEAD
-    const avatarControls = document.getElementById('profileAvatarControls');
-=======
->>>>>>> c00a53b (Remove avatar feature from profile system)
 
     const isEditing = (el) => !!(el && el.dataset && el.dataset.editing === 'true');
 
@@ -1627,14 +1622,6 @@ function updateProfileStatsDisplay() {
         testerListDisplay.textContent = formatRankListDisplay(rankConfig.testerUsers);
     }
     updateProfilePlaytimeDisplay();
-<<<<<<< HEAD
-
-    if (!isEditing(avatarControls)) {
-        updateAvatarDisplays(getAvatarConfig(profileData));
-    }
-
-=======
->>>>>>> c00a53b (Remove avatar feature from profile system)
     const totalPlayersRow = document.getElementById('profileTotalPlayersRow');
     const totalPlayersValue = document.getElementById('profileTotalPlayers');
     const totalPlaytimeRow = document.getElementById('profileTotalPlaytimeRow');
@@ -1762,21 +1749,12 @@ function setupProfileEditableField({ button, input, display, getValue, onSave, v
     });
 }
 
-<<<<<<< HEAD
-function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQuote = true, keepAvatar = true } = {}) {
-=======
 function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQuote = true } = {}) {
->>>>>>> c00a53b (Remove avatar feature from profile system)
     const preserved = {
         username: profileData.username,
         favoriteTower: profileData.favoriteTower,
         leastFavoriteTower: profileData.leastFavoriteTower,
-<<<<<<< HEAD
-        quote: profileData.quote,
-        avatar: getAvatarConfig(profileData)
-=======
         quote: profileData.quote
->>>>>>> c00a53b (Remove avatar feature from profile system)
     };
 
     profileData = { ...profileDefaults };
@@ -1806,16 +1784,6 @@ function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQ
         profileData.quote = preserved.quote || '';
     }
 
-<<<<<<< HEAD
-    if (keepAvatar && preserved.avatar) {
-        profileData.avatarData = preserved.avatar.data;
-        profileData.avatarZoom = preserved.avatar.zoom;
-        profileData.avatarOffsetX = preserved.avatar.offsetX;
-        profileData.avatarOffsetY = preserved.avatar.offsetY;
-    }
-
-=======
->>>>>>> c00a53b (Remove avatar feature from profile system)
     saveProfileData();
     updateProfileStatsDisplay();
 }
@@ -2313,12 +2281,7 @@ function resetAllProgress() {
     resetProfileProgress({
         keepUsername: true,
         keepFavorites: true,
-<<<<<<< HEAD
-        keepQuote: true,
-        keepAvatar: true
-=======
         keepQuote: true
->>>>>>> c00a53b (Remove avatar feature from profile system)
     });
     startPlaytimeTracking();
     
@@ -3419,10 +3382,6 @@ async function init() {
     setupAuthUI();
     setupProfileSearch();
     setupProfileViewerModal();
-<<<<<<< HEAD
-    setupProfileAvatarControls();
-=======
->>>>>>> c00a53b (Remove avatar feature from profile system)
     setupProfilePasswordControls();
     setupLogoutButton();
     setupTutorialModal();
@@ -3747,180 +3706,6 @@ function clamp(value, min, max) {
     return Math.min(Math.max(number, min), max);
 }
 
-<<<<<<< HEAD
-function getAvatarConfig(raw = {}) {
-    const dataValue = typeof raw.avatarData === 'string'
-        ? raw.avatarData
-        : typeof raw.data === 'string'
-            ? raw.data
-            : '';
-    const zoomSource = raw.avatarZoom !== undefined ? raw.avatarZoom : raw.zoom;
-    const offsetXSource = raw.avatarOffsetX !== undefined ? raw.avatarOffsetX : raw.offsetX;
-    const offsetYSource = raw.avatarOffsetY !== undefined ? raw.avatarOffsetY : raw.offsetY;
-
-    return {
-        data: dataValue,
-        zoom: clamp(parseInt(zoomSource, 10) || 150, 100, 300),
-        offsetX: clamp(parseInt(offsetXSource, 10) || 50, 0, 100),
-        offsetY: clamp(parseInt(offsetYSource, 10) || 50, 0, 100)
-    };
-}
-
-function applyAvatarPreview(element, config) {
-    if (!element) return;
-    const avatar = getAvatarConfig(config);
-    element.style.backgroundRepeat = 'no-repeat';
-    if (avatar.data) {
-        element.style.backgroundImage = `url(${avatar.data})`;
-        element.style.backgroundSize = `${Math.max(avatar.zoom, 10)}%`;
-        element.style.backgroundPosition = `${avatar.offsetX}% ${avatar.offsetY}%`;
-        element.style.backgroundColor = '#1c1c1c';
-    } else {
-        element.style.backgroundImage = 'none';
-        element.style.backgroundColor = '#2f2f2f';
-        element.style.backgroundSize = 'cover';
-        element.style.backgroundPosition = '50% 50%';
-    }
-}
-
-function setupProfileAvatarControls() {
-    const changeBtn = document.getElementById('profileAvatarChangeBtn');
-    const fileInput = document.getElementById('profileAvatarInput');
-    const preview = document.getElementById('profileAvatarPreview');
-    const controls = document.getElementById('profileAvatarControls');
-    const zoomInput = document.getElementById('profileAvatarZoom');
-    const offsetXInput = document.getElementById('profileAvatarOffsetX');
-    const offsetYInput = document.getElementById('profileAvatarOffsetY');
-    const saveBtn = document.getElementById('profileAvatarSaveBtn');
-    const cancelBtn = document.getElementById('profileAvatarCancelBtn');
-    const removeBtn = document.getElementById('profileAvatarRemoveBtn');
-
-    if (!changeBtn || !fileInput || !preview || !controls || !zoomInput || !offsetXInput || !offsetYInput || !saveBtn || !cancelBtn || !removeBtn) {
-        return;
-    }
-
-    controls.style.display = 'none';
-    controls.dataset.editing = 'false';
-
-    updateAvatarDisplays(profileData);
-
-    const applyEditorState = () => {
-        if (!avatarEditorState) return;
-        applyAvatarPreview(preview, avatarEditorState);
-        zoomInput.value = avatarEditorState.zoom;
-        offsetXInput.value = avatarEditorState.offsetX;
-        offsetYInput.value = avatarEditorState.offsetY;
-    };
-
-    const openEditor = () => {
-        if (!currentUsername) {
-            showAuthOverlay('login');
-            return;
-        }
-        avatarEditorState = { ...getAvatarConfig(profileData) };
-        fileInput.value = '';
-        applyEditorState();
-        controls.style.display = 'flex';
-        controls.dataset.editing = 'true';
-        fileInput.click();
-    };
-
-    const closeEditor = (refresh = true) => {
-        controls.style.display = 'none';
-        controls.dataset.editing = 'false';
-        fileInput.value = '';
-        avatarEditorState = null;
-        if (refresh) {
-            updateProfileStatsDisplay();
-        }
-    };
-
-    const handleFileSelection = (file) => {
-        if (!file) return;
-        if (file.size > 2 * 1024 * 1024) {
-            alert('Avatar must be 2MB or smaller.');
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => {
-            if (!avatarEditorState) {
-                avatarEditorState = { ...getAvatarConfig(profileData) };
-            }
-            avatarEditorState.data = reader.result;
-            applyEditorState();
-        };
-        reader.onerror = () => {
-            alert('Failed to read the selected image. Please try a different file.');
-        };
-        reader.readAsDataURL(file);
-    };
-
-    changeBtn.addEventListener('click', () => {
-        if (controls.dataset.editing === 'true') {
-            fileInput.click();
-        } else {
-            openEditor();
-        }
-    });
-
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files && event.target.files[0];
-        if (file) {
-            handleFileSelection(file);
-        }
-    });
-
-    zoomInput.addEventListener('input', () => {
-        if (!avatarEditorState) return;
-        avatarEditorState.zoom = clamp(parseInt(zoomInput.value, 10) || 150, 100, 300);
-        applyEditorState();
-    });
-
-    offsetXInput.addEventListener('input', () => {
-        if (!avatarEditorState) return;
-        avatarEditorState.offsetX = clamp(parseInt(offsetXInput.value, 10) || 50, 0, 100);
-        applyEditorState();
-    });
-
-    offsetYInput.addEventListener('input', () => {
-        if (!avatarEditorState) return;
-        avatarEditorState.offsetY = clamp(parseInt(offsetYInput.value, 10) || 50, 0, 100);
-        applyEditorState();
-    });
-
-    saveBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (!avatarEditorState) {
-            closeEditor();
-            return;
-        }
-        profileData.avatarData = avatarEditorState.data || '';
-        profileData.avatarZoom = avatarEditorState.zoom;
-        profileData.avatarOffsetX = avatarEditorState.offsetX;
-        profileData.avatarOffsetY = avatarEditorState.offsetY;
-        saveProfileData();
-        closeEditor();
-    });
-
-    cancelBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        closeEditor();
-    });
-
-    removeBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (!avatarEditorState) {
-            avatarEditorState = { ...getAvatarConfig(profileData) };
-        }
-        avatarEditorState.data = '';
-        avatarEditorState.zoom = 150;
-        avatarEditorState.offsetX = 50;
-        avatarEditorState.offsetY = 50;
-        applyEditorState();
-    });
-}
-=======
->>>>>>> c00a53b (Remove avatar feature from profile system)
 
 let pendingMusicTrack = null;
 let musicResumeHandler = null;
@@ -3937,22 +3722,6 @@ function isPrivilegedRank(username) {
     return key === 'owner' || key === 'coOwner';
 }
 
-<<<<<<< HEAD
-function updateAvatarDisplays(source = profileData) {
-    const preview = document.getElementById('profileAvatarPreview');
-    const viewer = document.getElementById('profileViewerAvatar');
-    const avatarConfig = getAvatarConfig(source || {});
-
-    if (preview) {
-        applyAvatarPreview(preview, avatarConfig);
-    }
-    if (viewer) {
-        applyAvatarPreview(viewer, avatarConfig);
-    }
-}
-
-=======
->>>>>>> c00a53b (Remove avatar feature from profile system)
 function removeAccount(username) {
     const normalized = normalizeUsernameValue(username);
     if (!normalized) {
