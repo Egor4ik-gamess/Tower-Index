@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Index</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="corner-buttons">
+            <button class="collection-btn" id="collectionBtn">Collection</button>
+            <button class="badges-btn" id="badgesBtn">Badges</button>
+            <button class="shop-btn" id="shopBtn">Shop</button>
+            <button class="profile-btn" id="profileBtn">Profile</button>
+            <button class="settings-btn" id="settingsBtn">⚙️ Settings</button>
+            <button class="tutorial-btn" id="tutorialBtn">Tutorial</button>
+        </div>
+        
+        <div class="gem-display" id="gemDisplay">💎 0</div>
+        <div class="top-bar">
+            <div class="profile-search-container" id="profileSearchContainer">
+                <input
+                    type="text"
+                    id="profileSearchInput"
+                    class="profile-search-input"
+                    placeholder="Search players..."
+                    autocomplete="off"
+                >
+                <div class="profile-search-suggestions" id="profileSearchSuggestions"></div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="announcement-bar" id="announcementBar"></div>
+            <div class="instructions" id="instructions">
+                <h1>Tower Index</h1><br>
+            
+                <p>Once in some time, a tower picture appears and to catch it, you need to say its name!<br>
+                The harder the tower, the rarer it is.<br>
+                Playing Roblox EToH, CSCD, AToS, LToD, TEA, TNZT and other games which will be included later is recommended.<br>
+                You can also skip the timer in-between the towers by clicking on the timer zone.
+                You can skip a tower if you have caught it 3+ times OR after 10 seconds of being unable to guess.
+                Badges are unlocked by completing certain tasks.<br>
+                If you encounter any bugs, please try refreshing the page. It may help fixing the issue.<br>
+                Change the profile if you want to change your username, quote, favorite and least favorite tower, etc.<br>
+                Complete the tutorial to get started.</p>
+            </div>
+            
+            <div class="timer-zone" id="timerZone">--</div>
+            
+            <div class="picture-container" id="pictureContainer">
+                <img id="towerImage" src="" alt="Tower Image">
+            </div>
+            
+            <div class="input-section">
+                <input 
+                    type="text" 
+                    id="towerInput" 
+                    placeholder="Enter tower name..."
+                    disabled
+                >
+                <button id="submitBtn" disabled>Submit</button>
+                <div class="message" id="message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="announcement-overlay" id="announcementOverlay">
+        <div class="announcement-overlay-inner" id="announcementOverlayInner"></div>
+    </div>
+    
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content profile-content">
+            <span class="close" id="closeProfileModal">&times;</span>
+            <h2>Profile</h2>
+            <div class="profile-section">
+                <div class="profile-row profile-avatar-row">
+                    <span class="profile-label">Avatar</span>
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-preview" id="profileAvatarPreview"></div>
+                        <div class="profile-avatar-actions">
+                            <button id="profileAvatarChangeBtn" class="profile-submit-btn" data-editing="false">Change Avatar</button>
+                            <input type="file" id="profileAvatarInput" class="profile-avatar-input" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/bmp" />
+                        </div>
+                        <div class="profile-avatar-controls" id="profileAvatarControls" data-editing="false">
+                            <div class="profile-avatar-sliders">
+                                <div class="profile-avatar-slider-group">
+                                    <label for="profileAvatarZoom">Zoom</label>
+                                    <input id="profileAvatarZoom" type="range" min="1" max="3" step="0.01" value="1">
+                                </div>
+                                <div class="profile-avatar-slider-group">
+                                    <label for="profileAvatarOffsetX">Horizontal</label>
+                                    <input id="profileAvatarOffsetX" type="range" min="0" max="100" value="50">
+                                </div>
+                                <div class="profile-avatar-slider-group">
+                                    <label for="profileAvatarOffsetY">Vertical</label>
+                                    <input id="profileAvatarOffsetY" type="range" min="0" max="100" value="50">
+                                </div>
+                            </div>
+                            <button id="profileAvatarSaveBtn" class="profile-action-btn profile-submit-btn">Save</button>
+                            <button id="profileAvatarCancelBtn" class="profile-action-btn profile-cancel-btn">Cancel</button>
+                            <button id="profileAvatarRemoveBtn" class="profile-action-btn profile-remove-btn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Username</span>
+                    <div class="profile-value">
+                        <button id="profileUsernameActionBtn" class="profile-action-btn" data-state="view">Change</button>
+                        <span id="profileUsernameDisplay" class="profile-text"></span>
+                        <input type="text" id="profileUsernameInput" class="profile-input" maxlength="32">
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Rank</span>
+                    <div class="profile-value">
+                        <span id="profileRankDisplay" class="profile-text profile-rank">Player</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Playtime</span>
+                    <div class="profile-value">
+                        <span id="profilePlaytime" class="profile-text">00:00:00</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Hardest Difficulty Caught</span>
+                    <div class="profile-value">
+                        <span id="profileHardestDifficulty" class="profile-text">None</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Unique Towers Caught</span>
+                    <div class="profile-value">
+                        <span id="profileUniqueCount" class="profile-text">0</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Total Towers Caught</span>
+                    <div class="profile-value">
+                        <span id="profileTotalCount" class="profile-text">0</span>
+                    </div>
+                </div>
+                <div class="profile-row profile-owner-row" id="profileTotalPlayersRow">
+                    <span class="profile-label">Total Players</span>
+                    <div class="profile-value">
+                        <span id="profileTotalPlayers" class="profile-text">0</span>
+                    </div>
+                </div>
+                <div class="profile-row profile-owner-row" id="profileTotalPlaytimeRow">
+                    <span class="profile-label">Total Playtime</span>
+                    <div class="profile-value">
+                        <span id="profileTotalPlaytime" class="profile-text">00:00:00</span>
+                    </div>
+                </div>
+                <div class="profile-row profile-owner-row" id="profileTotalTowersRow">
+                    <span class="profile-label">Total Towers Caught (Global)</span>
+                    <div class="profile-value">
+                        <span id="profileTotalTowers" class="profile-text">0</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Owners</span>
+                    <div class="profile-value"><span id="profileOwnerListDisplay" class="profile-text">I_Am_Grassy</span></div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Co-Owner Usernames</span>
+                    <div class="profile-value">
+                        <span id="profileCoOwnerListDisplay" class="profile-text">None</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Tester Usernames</span>
+                    <div class="profile-value">
+                        <span id="profileTesterListDisplay" class="profile-text">None</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Favorite Tower</span>
+                    <div class="profile-value">
+                        <button id="profileFavoriteActionBtn" class="profile-action-btn" data-state="view">Change</button>
+                        <span id="profileFavoriteDisplay" class="profile-text">None</span>
+                        <input list="towersDatalist" id="profileFavoriteInput" class="profile-input">
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Least Favorite Tower</span>
+                    <div class="profile-value">
+                        <button id="profileLeastFavoriteActionBtn" class="profile-action-btn" data-state="view">Change</button>
+                        <span id="profileLeastFavoriteDisplay" class="profile-text">None</span>
+                        <input list="towersDatalist" id="profileLeastFavoriteInput" class="profile-input">
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Quote</span>
+                    <div class="profile-value">
+                        <button id="profileQuoteActionBtn" class="profile-action-btn" data-state="view">Change</button>
+                        <span id="profileQuoteDisplay" class="profile-text profile-quote">No quote yet.</span>
+                        <textarea id="profileQuoteInput" class="profile-input profile-quote-input" maxlength="512"></textarea>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Password</span>
+                    <div class="profile-value">
+                        <button id="profilePasswordChangeBtn" class="profile-action-btn">Set / Change</button>
+                        <div class="profile-password-form" id="profilePasswordForm">
+                            <input type="password" id="profilePasswordInput" class="profile-input" placeholder="New password">
+                            <input type="password" id="profilePasswordConfirmInput" class="profile-input" placeholder="Confirm password">
+                            <div class="profile-password-actions">
+                                <button id="profilePasswordSubmitBtn" class="profile-action-btn profile-submit-btn">Submit</button>
+                                <button id="profilePasswordCancelBtn" class="profile-action-btn profile-cancel-btn">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Account</span>
+                    <div class="profile-value">
+                        <button id="logoutBtn" class="profile-action-btn logout-btn">Log Out</button>
+                    </div>
+                </div>
+            </div>
+            <datalist id="towersDatalist"></datalist>
+        </div>
+    </div>
+    
+    <!-- Profile Viewer Modal -->
+    <div class="modal" id="profileViewerModal">
+        <div class="modal-content profile-content profile-viewer">
+            <span class="close" id="closeProfileViewer">&times;</span>
+            <h2 id="profileViewerTitle">Player Profile</h2>
+            <div class="profile-section">
+                <div class="profile-row profile-avatar-row">
+                    <span class="profile-label">Avatar</span>
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-preview profile-avatar-viewer" id="profileViewerAvatar"></div>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Username</span>
+                    <div class="profile-value">
+                        <span id="profileViewerUsername" class="profile-text"></span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Rank</span>
+                    <div class="profile-value">
+                        <span id="profileViewerRank" class="profile-text profile-rank">Player</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Playtime</span>
+                    <div class="profile-value">
+                        <span id="profileViewerPlaytime" class="profile-text">00:00:00</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Hardest Difficulty Caught</span>
+                    <div class="profile-value">
+                        <span id="profileViewerHardestDifficulty" class="profile-text">None</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Unique Towers Caught</span>
+                    <div class="profile-value">
+                        <span id="profileViewerUniqueCount" class="profile-text">0</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Total Towers Caught</span>
+                    <div class="profile-value">
+                        <span id="profileViewerTotalCount" class="profile-text">0</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Favorite Tower</span>
+                    <div class="profile-value">
+                        <span id="profileViewerFavorite" class="profile-text">None</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Least Favorite Tower</span>
+                    <div class="profile-value">
+                        <span id="profileViewerLeastFavorite" class="profile-text">None</span>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <span class="profile-label">Quote</span>
+                    <div class="profile-value">
+                        <span id="profileViewerQuote" class="profile-text profile-quote">No quote yet.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Collection Modal -->
+    <div class="modal" id="collectionModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Collection</h2>
+            <div class="collection-list" id="collectionList"></div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <span class="close" id="closeSettingsModal">&times;</span>
+            <h2>Settings</h2>
+            <div class="settings-content">
+                <button id="resetProgressBtn" class="reset-btn">Reset Progress</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reset Confirmation Modal -->
+    <div class="modal" id="resetConfirmModal">
+        <div class="modal-content">
+            <h2>Confirm Reset</h2>
+            <p>Are you sure you want to reset ALL progress? This action cannot be undone!</p>
+            <div class="confirm-buttons">
+                <button id="confirmResetBtn" class="confirm-btn">Yes, Reset Everything</button>
+                <button id="cancelResetBtn" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tower Picture Modal -->
+    <div class="modal" id="towerPictureModal">
+        <div class="modal-content">
+            <span class="close" id="closeTowerModal">&times;</span>
+            <h2 id="towerPictureTitle">Tower Picture</h2>
+            <div class="tower-picture-container">
+                <img id="towerPictureImg" src="" alt="Tower Picture">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Badge Collection Modal -->
+    <div class="modal" id="badgeCollectionModal">
+        <div class="modal-content">
+            <span class="close" id="closeBadgeModal">&times;</span>
+            <h2>Badge Collection</h2>
+            <div class="badge-collection-grid" id="badgeCollectionGrid"></div>
+        </div>
+    </div>
+    
+    <!-- Shop Modal -->
+    <div class="modal" id="shopModal">
+        <div class="modal-content shop-content">
+            <span class="close" id="closeShopModal">&times;</span>
+            <h2>Shop</h2>
+            <div class="shop-section">
+                <h3>Spawn Tower</h3>
+                <p>Choose a difficulty to spawn a random tower from that difficulty:</p>
+                <div class="difficulty-selector" id="difficultySelector"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Authentication Overlay -->
+    <div class="auth-overlay hidden" id="authOverlay">
+        <div class="auth-modal">
+            <h2>Welcome to Tower Index</h2>
+            <p class="auth-description">Log in to continue, or register to start a new adventure.</p>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-auth-tab="login">Login</button>
+                <button class="auth-tab" data-auth-tab="register">Register</button>
+            </div>
+            <div class="auth-content">
+                <form id="loginForm" class="auth-form auth-form-active">
+                    <div class="auth-field">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" autocomplete="username">
+                    </div>
+                    <div class="auth-field">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="auth-submit">Login</button>
+                </form>
+                <form id="registerForm" class="auth-form">
+                    <div class="auth-field">
+                        <label for="registerUsername">Username</label>
+                        <input type="text" id="registerUsername" autocomplete="username">
+                    </div>
+                    <div class="auth-field">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" autocomplete="new-password">
+                    </div>
+                    <div class="auth-field">
+                        <label for="registerPasswordConfirm">Confirm Password</label>
+                        <input type="password" id="registerPasswordConfirm" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="auth-submit">Create Account</button>
+                </form>
+                <div class="auth-error" id="authError"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tutorial Modal -->
+    <div class="modal" id="tutorialModal">
+        <div class="modal-content">
+            <span class="close" id="closeTutorialModal">&times;</span>
+            <h2>How to Play Tower Index</h2>
+            <div class="tutorial-content">
+                <ol class="tutorial-steps">
+                    <li>Wait for a tower picture to appear. A timer counts down from 15 seconds before each spawn.</li>
+                    <li>When the tower shows up, type its exact name into the input box and press Enter or click Submit.</li>
+                    <li>Catching a tower earns gems based on its difficulty. Higher difficulty means more gems!</li>
+                    <li>You can skip a tower if you have caught it 3 times or after 10 seconds by clicking the timer.</li>
+                    <li>Use gems in the Shop to spawn a tower from a specific difficulty.</li>
+                    <li>Track your progress in Collection and Badges, and customize your profile in Profile.</li>
+                    <li>Remember to log in so your progress is saved. Without an account, you can’t play.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio element for music -->
+    <audio id="gameMusic" loop></audio>
+    
+    <script src="game.js"></script>
+</body>
+</html>
+
