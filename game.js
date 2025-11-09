@@ -78,11 +78,8 @@ const profileDefaults = {
     favoriteTower: '',
     leastFavoriteTower: '',
     quote: '',
-    playtimeSeconds: 0,
-    avatarData: '',
-    avatarZoom: 150,
-    avatarOffsetX: 50,
-    avatarOffsetY: 50
+<<<<<<< HEAD
+    playtimeSeconds: 0
 };
 
 let profileData = { ...profileDefaults };
@@ -102,7 +99,6 @@ const DEFAULT_OWNER_USERNAME = 'I_Am_Grassy';
 const DEFAULT_OWNER_PASSWORD = 'towerofqwertyuiopcompleted';
 
 const LEGACY_OWNER_USERNAMES = ['livingmy9lifes', 'IAmGrassy'];
-let avatarEditorState = null;
 
 const rankConfigDefaults = {
     ownerUsers: ['I_Am_Grassy'],
@@ -1097,7 +1093,6 @@ function openProfileViewer(username) {
     const favoriteElement = document.getElementById('profileViewerFavorite');
     const leastFavoriteElement = document.getElementById('profileViewerLeastFavorite');
     const quoteElement = document.getElementById('profileViewerQuote');
-    const avatarElement = document.getElementById('profileViewerAvatar');
 
     if (title) {
         title.textContent = `${username}'s Profile`;
@@ -1106,9 +1101,6 @@ function openProfileViewer(username) {
         usernameElement.textContent = profile.username || username;
     }
     updateRankBadge(rankElement, username);
-    if (avatarElement) {
-        applyAvatarPreview(avatarElement, profile);
-    }
     if (playtimeElement) {
         playtimeElement.textContent = formatPlaytime(profile.playtimeSeconds || 0);
     }
@@ -1583,7 +1575,10 @@ function updateProfileStatsDisplay() {
     const ownerListDisplay = document.getElementById('profileOwnerListDisplay');
     const coOwnerListDisplay = document.getElementById('profileCoOwnerListDisplay');
     const testerListDisplay = document.getElementById('profileTesterListDisplay');
+<<<<<<< HEAD
     const avatarControls = document.getElementById('profileAvatarControls');
+=======
+>>>>>>> c00a53b (Remove avatar feature from profile system)
 
     const isEditing = (el) => !!(el && el.dataset && el.dataset.editing === 'true');
 
@@ -1632,11 +1627,14 @@ function updateProfileStatsDisplay() {
         testerListDisplay.textContent = formatRankListDisplay(rankConfig.testerUsers);
     }
     updateProfilePlaytimeDisplay();
+<<<<<<< HEAD
 
     if (!isEditing(avatarControls)) {
         updateAvatarDisplays(getAvatarConfig(profileData));
     }
 
+=======
+>>>>>>> c00a53b (Remove avatar feature from profile system)
     const totalPlayersRow = document.getElementById('profileTotalPlayersRow');
     const totalPlayersValue = document.getElementById('profileTotalPlayers');
     const totalPlaytimeRow = document.getElementById('profileTotalPlaytimeRow');
@@ -1764,13 +1762,21 @@ function setupProfileEditableField({ button, input, display, getValue, onSave, v
     });
 }
 
+<<<<<<< HEAD
 function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQuote = true, keepAvatar = true } = {}) {
+=======
+function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQuote = true } = {}) {
+>>>>>>> c00a53b (Remove avatar feature from profile system)
     const preserved = {
         username: profileData.username,
         favoriteTower: profileData.favoriteTower,
         leastFavoriteTower: profileData.leastFavoriteTower,
+<<<<<<< HEAD
         quote: profileData.quote,
         avatar: getAvatarConfig(profileData)
+=======
+        quote: profileData.quote
+>>>>>>> c00a53b (Remove avatar feature from profile system)
     };
 
     profileData = { ...profileDefaults };
@@ -1800,6 +1806,7 @@ function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQ
         profileData.quote = preserved.quote || '';
     }
 
+<<<<<<< HEAD
     if (keepAvatar && preserved.avatar) {
         profileData.avatarData = preserved.avatar.data;
         profileData.avatarZoom = preserved.avatar.zoom;
@@ -1807,6 +1814,8 @@ function resetProfileProgress({ keepUsername = true, keepFavorites = true, keepQ
         profileData.avatarOffsetY = preserved.avatar.offsetY;
     }
 
+=======
+>>>>>>> c00a53b (Remove avatar feature from profile system)
     saveProfileData();
     updateProfileStatsDisplay();
 }
@@ -2304,8 +2313,12 @@ function resetAllProgress() {
     resetProfileProgress({
         keepUsername: true,
         keepFavorites: true,
+<<<<<<< HEAD
         keepQuote: true,
         keepAvatar: true
+=======
+        keepQuote: true
+>>>>>>> c00a53b (Remove avatar feature from profile system)
     });
     startPlaytimeTracking();
     
@@ -3406,7 +3419,10 @@ async function init() {
     setupAuthUI();
     setupProfileSearch();
     setupProfileViewerModal();
+<<<<<<< HEAD
     setupProfileAvatarControls();
+=======
+>>>>>>> c00a53b (Remove avatar feature from profile system)
     setupProfilePasswordControls();
     setupLogoutButton();
     setupTutorialModal();
@@ -3731,6 +3747,7 @@ function clamp(value, min, max) {
     return Math.min(Math.max(number, min), max);
 }
 
+<<<<<<< HEAD
 function getAvatarConfig(raw = {}) {
     const dataValue = typeof raw.avatarData === 'string'
         ? raw.avatarData
@@ -3902,6 +3919,8 @@ function setupProfileAvatarControls() {
         applyEditorState();
     });
 }
+=======
+>>>>>>> c00a53b (Remove avatar feature from profile system)
 
 let pendingMusicTrack = null;
 let musicResumeHandler = null;
@@ -3918,6 +3937,7 @@ function isPrivilegedRank(username) {
     return key === 'owner' || key === 'coOwner';
 }
 
+<<<<<<< HEAD
 function updateAvatarDisplays(source = profileData) {
     const preview = document.getElementById('profileAvatarPreview');
     const viewer = document.getElementById('profileViewerAvatar');
@@ -3931,6 +3951,8 @@ function updateAvatarDisplays(source = profileData) {
     }
 }
 
+=======
+>>>>>>> c00a53b (Remove avatar feature from profile system)
 function removeAccount(username) {
     const normalized = normalizeUsernameValue(username);
     if (!normalized) {
